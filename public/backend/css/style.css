@@ -1,0 +1,425 @@
+/* ========================================================================== */
+/*                                Root Variables                              */
+/* ========================================================================== */
+
+:root {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  /* Light Theme Colors */
+  --color-bg: #eeeefd;
+  --color-surface: #ffffff;
+  --color-text: #74829c;
+  --color-text-hover: #525ce5;
+  --color-text-hover-bg: #f6f7fe;
+
+  /* Dark Theme Colors */
+  --color-bg-dark: #071932;
+  --color-surface-dark: #001027;
+  --color-text-dark: #b3b8bf;
+  --color-text-border-dark: #525ce5;
+  --color-text-hover-dark: #ffffff;
+  --color-text-hover-bg-dark: #0d1c32;
+}
+
+/* ============================Repeater Form============================================== */
+.input-group { margin-bottom: 10px; }
+        .remove-btn { background: red; color: #fff; border: none; padding: 5px 10px; }
+        .add-btn { background: green; color: #fff; border: none; padding: 5px 10px; }                                Global Styles                               */
+/* ===================================Repeater Form======================================= */
+
+body {
+  background-color: var(--color-bg);
+  min-height: 100vh;
+}
+
+/* ========================================================================== */
+/*                                   Header                                   */
+/* ========================================================================== */
+
+header {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  height: 70px;
+}
+
+.logo {
+  max-width: 239px;
+}
+
+.toggle-sidebar {
+  color: var(--color-icon);
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.icon {
+  cursor: pointer;
+}
+
+.icon-badge {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 14px;
+  height: 14px;
+  background: #fb5454;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 10px;
+}
+
+.dropdown-list {
+  width: 300px;
+}
+
+.avatar {
+  height: 30px;
+  width: 30px;
+}
+
+/* ========================================================================== */
+/*                                   Sidebar                                  */
+/* ========================================================================== */
+.sidebar {
+  background-color: var(--color-surface);
+  width: 250px;
+  top: 63px;
+  z-index: 99;
+  transition: width 0.3s;
+  overflow-y: auto;
+}
+.sidebar::-webkit-scrollbar {
+  width: 0px;
+}
+.sidebar .nav-link {
+  color: var(--color-text);
+}
+
+.sidebar .nav-link:hover {
+  background-color: var(--color-text-hover-bg);
+  color: var(--color-text-hover);
+}
+
+.sidebar .nav-link.active {
+  background-color: var(--color-text-hover-bg);
+  color: var(--color-text-hover);
+  border-right: 2px solid var(--color-text-border-dark);
+  font-weight: 500;
+}
+.sidebar .submenu.collapse .nav-link.active {
+  background-color: transparent;
+  color: var(--color-text-hover);
+  border-right: 2px solid var(--color-text-border-dark);
+}
+
+.sidebar .nav-link .arrow {
+  transition: transform 0.3s;
+}
+
+.sidebar .nav-link[aria-expanded="true"] .arrow {
+  transform: rotate(90deg);
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar.collapsed:hover {
+  width: 250px;
+}
+
+.main-content {
+  margin-left: 250px;
+  margin-top: 70px;
+  transition: margin-left 0.3s;
+  overflow: hidden;
+}
+
+.main-content.collapsed {
+  margin-left: 60px;
+}
+/* Mobile styles */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+    width: 250px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1050;
+    display: block;
+  }
+  .main-content,
+  .main-content.collapsed {
+    margin-left: 0 !important;
+  }
+
+  .sidebar.show {
+    transform: translateX(0);
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 250px;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: calc(100% - 250px);
+    height: 100%;
+    z-index: 1040;
+    display: none;
+  }
+
+  .overlay.show {
+    display: block;
+  }
+  .desktop-logo {
+    display: none;
+  }
+  mobile-logo {
+    display: block;
+  }
+}
+/* ========================================================================== */
+/*                                   Footer                                   */
+/* ========================================================================== */
+
+.footer {
+  background-color: var(--color-surface);
+  transition: margin-left 0.3s;
+}
+
+/* ========================================================================== */
+/*                               Dark Theme Mode                              */
+/* ========================================================================== */
+
+[data-bs-theme="dark"] body {
+  background-color: var(--color-bg-dark);
+}
+
+[data-bs-theme="dark"] header,
+[data-bs-theme="dark"] aside,
+[data-bs-theme="dark"] .card-dark {
+  background-color: var(--color-surface-dark);
+  color: var(--color-text-dark);
+}
+
+[data-bs-theme="dark"] footer {
+  background-color: var(--color-surface-dark);
+}
+
+[data-bs-theme="dark"] .input-field {
+  background-color: var(--color-bg-dark);
+}
+
+[data-bs-theme="dark"] .dropdown-list {
+  background-color: var(--color-surface-dark);
+  color: var(--color-text-dark);
+}
+
+/* Dark Sidebar Styles */
+[data-bs-theme="dark"] .sidebar.collapsed ul.nav > li > ul.submenu {
+  background-color: var(--color-surface-dark);
+  color: var(--color-text-hover-dark);
+}
+
+[data-bs-theme="dark"] .nav-link:hover {
+  background-color: var(--color-text-hover-bg-dark);
+  color: var(--color-text-hover-dark);
+}
+
+[data-bs-theme="dark"] .sidebar .nav-link.active {
+  background-color: var(--color-text-hover-bg-dark);
+  color: var(--color-text-hover-dark);
+  border-right: 2px solid var(--color-text-border-dark);
+}
+
+/* Table Dark Mode */
+[data-bs-theme="dark"] table th,
+[data-bs-theme="dark"] table td {
+  background-color: var(--color-surface-dark);
+}
+
+/* ========================================================================== */
+/*                               Utility Classes                              */
+/* ========================================================================== */
+.message-dropdown{
+  width: 320px;
+}
+.avatar {
+  width: 50px;
+  height: 50px;
+}
+
+.badge-custom {
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.product-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+}
+
+.product-title {
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+.product-subtitle {
+  color: #6c757d;
+  font-size: 12px;
+}
+/* ========================================================================== */
+/*                                Widget page                                 */
+/* ========================================================================== */
+.border-color1{
+  border-top: 4px solid blue;
+}
+
+.progress-bar-height {
+  height: 5px;
+}
+/* ========================================================================== */
+/*                               Avatar Page                                  */
+/* ========================================================================== */
+.avatar-img {
+  border: 2px solid white;
+}
+.avatar-img-sm {
+  width: 32px;
+  height: 32px;
+}
+.avatar-img-md {
+  width: 48px;
+  height: 48px;
+}
+.avatar-img-lg {
+  width: 64px;
+  height: 64px;
+}
+.avatar-img-xl {
+  width: 80px;
+  height: 80px;
+}
+.avatar-img-xxl {
+  width: 96px;
+  height: 96px;
+}
+.avatar-indicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(10%, 10%);
+}
+/* ========================================================================== */
+/*                        Product detail page                                 */
+/* ========================================================================== */
+.sm-product{
+  height: 75px;
+  width: 110px;
+}
+/* ========================================================================== */
+/*                                  Card page                                 */
+/* ========================================================================== */
+.card-img{
+  height: 30px;
+  width: 30px;
+  margin-left: -5px;
+}
+
+.bg-img1 {
+  background-image: url('../images/cards/3.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+  opacity: 0.9;
+  color: white;
+}
+/* ========================================================================== */
+/*                               Contact page                                 */
+/* ========================================================================== */
+.profile.card{
+  margin-top: -100px;
+}
+
+.circle-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* ========================================================================== */
+/*                             Marketing page                                 */
+/* ========================================================================== */
+.vertical-bar-1 {
+  width: 4px; 
+  height: 10px;
+}
+.vertical-bar-2 {
+  width: 4px; 
+  height: 18px;
+}
+.vertical-bar-3 {
+  width: 4px; 
+  height: 14px;
+}
+.vertical-bar-4 {
+  width: 4px; 
+  height: 22px;
+}
+.vertical-bar-5 {
+  width: 4px; 
+  height: 16px;
+}
+.vertical-bar-6 {
+  width: 4px; 
+  height: 20px;
+}
+/* ========================================================================== */
+/*                               Profile page                                 */
+/* ========================================================================== */
+ul.timeline {
+  list-style-type: none;
+  position: relative;
+}
+ul.timeline:before {
+  content: ' ';
+  background: #d4d9df;
+  display: inline-block;
+  position: absolute;
+  left: 29px;
+  width: 2px;
+  height: 100%;
+  z-index: 400;
+}
+ul.timeline > li {
+  margin: 20px 0;
+  padding-left: 20px;
+}
+ul.timeline > li:before {
+  content: ' ';
+  background: white;
+  display: inline-block;
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid #22c0e8;
+  left: 20px;
+  width: 20px;
+  height: 20px;
+  z-index: 400;
+}
