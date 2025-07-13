@@ -24,40 +24,31 @@
             <form action="{{ route('loan_collections.store') }}" method="POST">
                 @csrf
 
-                <div class="mb-3">
-                    <label for="user_id" class="form-label">Select User</label>
-                    <select name="user_id" id="user_id" class="form-select" required>
-                        <option value="">-- Select User --</option>
-                        @foreach($users as $user)
-                            <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                {{ $user->name }}
-                            </option>
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Loan Number</th>
+                            <th>User Name</th>
+                            <th>Balance</th>
+                            <th>Collection Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($loans as $index => $loan)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                               <td>{{ $loan->loan_number ?? '—' }}</td>
+        <td>{{ $loan->user->name ?? 'N/A' }}</td>
+        <td>{{ number_format($loan->$loanCollection->amount, 2) }}</td>
+                                <td>
+                                    <label for="amount" class="form-label">Amount</label>
+                                    <input type="number" name="amount" id="amount" class="form-control" value="{{ old('amount') }}" step="0.01" min="0">
+                                </td>
+                            </tr>
                         @endforeach
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="loan_id" class="form-label">Select Loan (Optional)</label>
-                    <select name="loan_id" id="loan_id" class="form-select">
-                        <option value="">-- Select Loan --</option>
-                        @foreach($loans as $loan)
-                            <option value="{{ $loan->id }}" {{ old('loan_id') == $loan->id ? 'selected' : '' }}>
-                                Loan #{{ $loan->id }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="date" class="form-label">Date</label>
-                    <input type="date" name="date" id="date" class="form-control" value="{{ old('date') }}">
-                </div>
-
-                <div class="mb-3">
-                    <label for="amount" class="form-label">Amount</label>
-                    <input type="number" name="amount" id="amount" class="form-control" value="{{ old('amount') }}" step="0.01" min="0">
-                </div>
-
+                    </tbody>
+                </table>
                 <button type="submit" class="btn btn-success">Save</button>
             </form>
         </div>

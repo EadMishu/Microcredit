@@ -63,6 +63,7 @@ Route::middleware(['auth'])->group(function () {     // Authenticated Routes
     Route::resource('loan_collections', LoanCollectionController::class);
     Route::resource('dps_collections', DpsCollectionController::class);
     Route::resource('deposit_collections', DepositCollectionController::class);
+    Route::post('/loan-collections/store-bulk', [LoanCollectionController::class, 'storeBulk'])->name('loan_collections.store_bulk');
 
        
     

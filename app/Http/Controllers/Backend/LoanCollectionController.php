@@ -17,8 +17,9 @@ class LoanCollectionController extends Controller
      */
     public function index()
     {
+        $loans = Loan::with('user')->get(); // Only active loans ideally
         $loanCollections = LoanCollection::with(['user', 'loan'])->latest()->paginate(10);
-        return view('backend.loan_collection.loan_collection_index', compact('loanCollections'));
+        return view('backend.loan_collection.loan_collection_index', compact('loanCollections','loans'));
     }
 
     /**
@@ -28,8 +29,9 @@ class LoanCollectionController extends Controller
     {
         
         $users = User::all();
-        $loans = Loan::all();
-        return view('backend.loan_collection.loan_collection_create', compact('users', 'loans'));
+        $loanCollections = LoanCollection::all();
+         $loans = Loan::with(['user', 'LoanCollection'])->get();
+        return view('backend.loan_collection.loan_collection_create', compact('loanCollections','users', 'loans'));
     }
 
     /**
@@ -38,7 +40,7 @@ class LoanCollectionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'nullable|exists:users,id',
             'loan_id' => 'nullable|exists:loans,id',
             'date' => 'nullable|date',
          
@@ -58,6 +60,28 @@ class LoanCollectionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+
+    public function storeBulk(Request $request)
+{
+    $request->validate([
+        'collections.*.loan_id' => 'required|exists:loans,id',
+        'collections.*.amount' => 'nullable|numeric|min:0',
+    ]);
+
+    foreach ($request->collections as $data) {
+        if (!empty($data['amount']) && $data['amount'] > 0) {
+            LoanCollection::create([
+                'loan_id' => $data['loan_id'],
+                'amount' => $data['amount'],
+                'date' => now(),
+            ]);
+
+            // Optionally deduct this from the loan's balance here
+        }
+    }
+
+    return redirect()->back()->with('success', 'Loan collections saved successfully!');
+}
     public function edit(LoanCollection $loanCollection)
     {
         $users = User::all();
