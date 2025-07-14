@@ -7,6 +7,7 @@ use App\Models\Loan;
 use App\Models\LoanCollection;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -16,46 +17,52 @@ class LoanCollectionController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $loans = Loan::with('user')->get(); // Only active loans ideally
-        $loanCollections = LoanCollection::with(['user', 'loan'])->latest()->paginate(10);
-        return view('backend.loan_collection.loan_collection_index', compact('loanCollections','loans'));
-    }
+{
+    // loan_collections 
+    $collections = DB::table('loan_collections')
+        ->select('date', DB::raw('SUM(amount) as total_amount'))
+        ->groupBy('date')
+        ->orderBy('date', 'desc')
+        ->paginate(15); // pagination 
+
+    return view('backend.loan_collection.loan_collection_index', compact('collections'));
+}
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        
-        $users = User::all();
-        $loanCollections = LoanCollection::all();
-         $loans = Loan::with(['user', 'LoanCollection'])->get();
-        return view('backend.loan_collection.loan_collection_create', compact('loanCollections','users', 'loans'));
+        $loans =  Loan::where('status', 2)->get();
+        return view('backend.loan_collection.loan_collection_create', compact('loans'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'user_id' => 'nullable|exists:users,id',
-            'loan_id' => 'nullable|exists:loans,id',
-            'date' => 'nullable|date',
-         
-        ]);
-         // Use helper function to get amount
-        $amount = loan_balance($validated['loan_id']);
+{
+    $date = $request->input('date'); // Get the top-level date
 
-        // Add amount to validated data
-        $validated['amount'] = $amount;
-
-
-        LoanCollection::create($validated);
-
-        return redirect()->route('loan_collections.index')->with('success', 'Loan collection added successfully.');
+    if ($request->collections) {
+        foreach ($request->collections as $data) {
+            if (!empty($data['amount']) && $data['amount'] > 0) {
+                LoanCollection::create([
+                    'loan_id' => $data['loan_id'],
+                    'user_id' => $data['user_id'],
+                    'amount'  => $data['amount'],
+                    'date'    => $date, // Use the shared form date
+                ]);
+                $request->validate([
+    'date' => 'required|date',
+    'collections.*.amount' => 'nullable|numeric|min:0',
+]);
+            }
+        }
     }
+
+    return redirect()->route('loan_collections.index')->with('success', 'Loan collection added successfully.');
+}
 
     /**
      * Show the form for editing the specified resource.
@@ -117,4 +124,42 @@ class LoanCollectionController extends Controller
 
         return redirect()->route('loan_collections.index')->with('success', 'Loan collection deleted successfully.');
     }
+
+
+    public function editDate($date)
+{
+    $loans =  Loan::where('status', 2)->get();
+
+    return view('backend.loan_collection.loan_collection_edit', compact('date', 'loans'));
+}
+
+ public function updateDate(Request $request, $date)
+{
+
+    if ($request->collections) {
+        foreach ($request->collections as $data) {
+            if (!empty($data['amount']) && $data['amount'] > 0) {
+                LoanCollection::where('loan_id', $data['loan_id'])
+                    ->where('user_id', $data['user_id'])
+                    ->whereDate('date', $date)
+                    ->update(
+                        [
+                            'amount' => $data['amount'],
+                        ]
+                    );
+            }
+        }
+    }
+
+    return redirect()->route('loan_collections.index')->with('success', 'Loan collection updated successfully.');
+    }
+
+public function destroyDate($date)
+{
+    LoanCollection::whereDate('date', $date)->delete();
+
+    return redirect()->route('loan_collections.index')->with('success', 'All collections for date ' . $date . ' deleted successfully.');
+}
+
+
 }

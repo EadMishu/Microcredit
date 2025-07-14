@@ -64,4 +64,5 @@ class Loan extends Model
     {
         return $this->hasOne(TimeExtension::class, 'loan_id')->latest();
     }
+
 }

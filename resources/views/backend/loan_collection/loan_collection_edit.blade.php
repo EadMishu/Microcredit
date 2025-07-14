@@ -3,7 +3,7 @@
 
 <main class="main-content px-3">
     <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
-        <h3 class="text-muted">Edit Loan Collection</h3>
+        <h3 class="text-muted">Edit Loan Collections for {{ \Carbon\Carbon::parse($date)->format('d-m-Y') }}</h3>
         <a href="{{ route('loan_collections.index') }}" class="btn btn-secondary">Back to List</a>
     </div>
 
@@ -21,45 +21,46 @@
             @endif
 
             {{-- Form --}}
-            <form action="{{ route('loan_collections.update', $loanCollection->id) }}" method="POST">
+            <form action="{{ route('loan_collections.update_date', $date) }}" method="POST">
+                @method('PATCH')
                 @csrf
-                @method('PUT')
-
-                <div class="mb-3">
-                    <label for="user_id" class="form-label">Select User</label>
-                    <select name="user_id" id="user_id" class="form-select" required>
-                        <option value="">-- Select User --</option>
-                        @foreach($users as $user)
-                            <option value="{{ $user->id }}" {{ old('user_id', $loanCollection->user_id) == $user->id ? 'selected' : '' }}>
-                                {{ $user->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="loan_id" class="form-label">Select Loan (Optional)</label>
-                    <select name="loan_id" id="loan_id" class="form-select">
-                        <option value="">-- Select Loan --</option>
-                        @foreach($loans as $loan)
-                            <option value="{{ $loan->id }}" {{ old('loan_id', $loanCollection->loan_id) == $loan->id ? 'selected' : '' }}>
-                                Loan #{{ $loan->id }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
                 <div class="mb-3">
                     <label for="date" class="form-label">Date</label>
-                    <input type="date" name="date" id="date" class="form-control"
-                           value="{{ old('date', $loanCollection->date ? $loanCollection->date->format('Y-m-d') : '') }}">
+                    <input type="date" name="date" id="date" class="form-control" value="{{ $date }}" readonly>
                 </div>
 
-                <div class="mb-3">
-                    <label for="amount" class="form-label">Amount</label>
-                    <input type="number" name="amount" id="amount" class="form-control"
-                           value="{{ old('amount', $loanCollection->amount) }}" step="0.01" min="0">
-                </div>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>User ID</th>
+                            <th>User Name</th>
+                            <th>Loan Number</th>
+                            <th>Loan Premium</th>
+                            <th>Balance</th>
+                            <th>Collection Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($loans as $index => $loan)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $loan->user?->member_number ?? '—' }}</td>
+                                <td>{{ $loan->user->name ?? 'N/A' }}</td>
+                                <td>{{ $loan->loan_number ?? '—' }}</td>
+                                <td>{{ number_format($loan->premium, 2) }}</td>
+                                <td>{{ number_format(loan_balance($loan->id), 2) }}</td>
+                                <td>
+                                    <input type="number" name="collections[{{ $index }}][amount]" class="form-control"
+                                           value="{{ $loan->loanCollections()?->whereDate('date', $date)->first()?->amount }}"
+                                           step="0.01" min="0">
+                                    <input type="hidden" name="collections[{{ $index }}][loan_id]" value="{{ $loan->id }}">
+                                    <input type="hidden" name="collections[{{ $index }}][user_id]" value="{{ $loan->user_id }}">
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
                 <button type="submit" class="btn btn-success">Update</button>
             </form>

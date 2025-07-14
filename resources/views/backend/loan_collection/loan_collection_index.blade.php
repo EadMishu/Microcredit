@@ -21,44 +21,52 @@
     </div>
     <div class="card">
         <div class="card-body table-responsive">
-            <table class="table table-bordered table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>User Name</th>
-                        <th>Loan ID</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($loanCollections as $index => $collection)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ optional($collection->user)->name ?? 'N/A' }}</td>
-                            <td>{{ optional($collection->loan)->id ?? '—' }}</td>
-                            <td>{{ $collection->date ? \Carbon\Carbon::parse($collection->date)->format('d-m-Y') : '—' }}</td>
-                            <td>{{ number_format($collection->amount, 2) }}</td>
-                            <td>
-                                <a href="{{ route('loan_collections.edit', $collection->id) }}" class="btn btn-sm"><i class="bi bi-pencil-square"></i></a>
-                                <form action="{{ route('loan_collections.destroy', $collection->id) }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button onclick="return confirm('Are you sure to delete this loan collection?')" class="btn btn-sm bi-trash"></button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Total Amount</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($collections as $index => $collection)
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ \Carbon\Carbon::parse($collection->date)->format('d-m-Y') }}</td>
+                <td>{{ number_format($collection->total_amount, 2) }}</td>
+                <td>
+                    <a href="{{ route('loan_collections.edit_date', $collection->date) }}" class="btn btn-sm btn-primary" title="Edit">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+
+                    <form action="{{ route('loan_collections.destroy_date', $collection->date) }}" method="POST" style="display:inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('Are you sure to delete all collections for this date?')" class="btn btn-sm btn-danger" title="Delete">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            
+        @endforeach
+    </tbody>
+</table>
+
+{{-- Pagination --}}
+@if(method_exists($collections, 'links'))
+    {{ $collections->links() }}
+@endif
 
             {{-- Pagination --}}
-            @if(method_exists($loanCollections, 'links'))
-                <div class="mt-3">
-                    {{ $loanCollections->links() }}
-                </div>
-            @endif
+            {{-- Pagination --}}
+@if(method_exists($collections, 'links'))
+    <div class="mt-3">
+        {{ $collections->links() }}
+    </div>
+@endif
         </div>
     </div>
 </main>

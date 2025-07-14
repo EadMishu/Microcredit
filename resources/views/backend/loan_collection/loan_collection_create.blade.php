@@ -19,38 +19,52 @@
                     </ul>
                 </div>
             @endif
+            
 
             {{-- Form --}}
             <form action="{{ route('loan_collections.store') }}" method="POST">
-                @csrf
+    @csrf
+     <div class="mb-3">
+        <label for="date" class="form-label">Date</label>
+        <input type="date" name="date" id="date" class="form-control"
+               value="{{ old('date', date('Y-m-d')) }}">
+    </div>
 
-                <table class="table table-bordered table-hover">
-                    <thead class="table-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Loan Number</th>
-                            <th>User Name</th>
-                            <th>Balance</th>
-                            <th>Collection Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($loans as $index => $loan)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                               <td>{{ $loan->loan_number ?? '—' }}</td>
-        <td>{{ $loan->user->name ?? 'N/A' }}</td>
-        <td>{{ number_format($loan->$loanCollection->amount, 2) }}</td>
-                                <td>
-                                    <label for="amount" class="form-label">Amount</label>
-                                    <input type="number" name="amount" id="amount" class="form-control" value="{{ old('amount') }}" step="0.01" min="0">
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <button type="submit" class="btn btn-success">Save</button>
-            </form>
+    <!-- Then comes your table and foreach loop -->
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>User ID</th>
+                <th>User Name</th>
+                <th>Loan Number</th>
+                <th>Loan Premium</th>
+                <th>Balance</th>
+                <th>Collection Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($loans as $index => $loan)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $loan->user?->member_number ?? '—' }}</td>
+                    <td>{{ $loan->user->name ?? 'N/A' }}</td>
+                    <td>{{ $loan->loan_number ?? '—' }}</td>
+                    <td>{{ number_format($loan->premium, 2) }}</td>
+                    <td>{{ number_format(loan_balance($loan->id), 2) }}</td>
+                    <td>
+                        <input type="number" name="collections[{{ $index }}][amount]" class="form-control"
+                               value="{{ old('collections.' . $index . '.amount') }}" step="0.01" min="0">
+                        <input type="hidden" name="collections[{{ $index }}][loan_id]" value="{{ $loan->id }}">
+                        <input type="hidden" name="collections[{{ $index }}][user_id]" value="{{ $loan->user?->id }}">
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
         </div>
     </div>
 </main>

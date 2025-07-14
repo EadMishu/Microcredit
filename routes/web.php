@@ -60,10 +60,16 @@ Route::middleware(['auth'])->group(function () {     // Authenticated Routes
     Route::resource('deposit-types',DepositTypeController ::class);
     Route::patch('/deposit-types/{id}/toggle-status', [DepositTypeController::class, 'toggleStatus'])->name('deposit-types.toggle-status');
         // --- depositType Management ---
+    Route::get('loan_collections/edit_date/{date}', [LoanCollectionController::class, 'editDate'])->name('loan_collections.edit_date');
+    Route::patch('loan_collections/update_date/{date}', [LoanCollectionController::class, 'updateDate'])->name('loan_collections.update_date');
     Route::resource('loan_collections', LoanCollectionController::class);
     Route::resource('dps_collections', DpsCollectionController::class);
     Route::resource('deposit_collections', DepositCollectionController::class);
     Route::post('/loan-collections/store-bulk', [LoanCollectionController::class, 'storeBulk'])->name('loan_collections.store_bulk');
+
+
+    
+Route::delete('loan_collections/destroy_date/{date}', [LoanCollectionController::class, 'destroyDate'])->name('loan_collections.destroy_date');
 
        
     
