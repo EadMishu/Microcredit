@@ -73,7 +73,7 @@
                                 </form>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-sm bi bi-plus-lg" onclick="userExtends({{$user->id}})"></button>
+                                <button type="button" class="btn btn-sm bi bi-plus-lg" onclick="userExtends"({{$user->id}})"></button>
                                 <a href="{{ route('owner.edit', $user->id) }}" class="btn btn-sm "><i class="bi bi-pencil-square"></i> </a>
                                 <form action="{{ route('owner.destroy', $user->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
