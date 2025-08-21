@@ -1,4 +1,4 @@
-<div class="modal fade" id="extendModal" tabindex="-1" aria-labelledby="modalLabel-{{ $loan->id }}"  aria-hidden="true">
+<div class="modal fade" id="extendModal" tabindex="-1" aria-labelledby="modalLabel-extend"  aria-hidden="true">
     <div class="modal-dialog">
         <form action="{{ route('time-extension.store') }}" method="POST">
             @csrf

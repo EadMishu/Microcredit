@@ -20,6 +20,9 @@ class User extends Authenticatable
         'husband_name',
         'wife_name',
         'occupation',
+        'interest_rate',
+        'member_fee',
+        'balance',
         'dob',
         'nid',
         'present_address',
@@ -61,9 +64,21 @@ class User extends Authenticatable
     | Relationships
     |--------------------------------------------------------------------------
     */
+     public function transaction(){
+        return $this->hasMany(Transaction::class);
+     }
+    
     public function loanCollections()
     {
     return $this->hasMany(LoanCollection::class);
+    }
+    public function savingCollections()
+    {
+    return $this->hasMany(Savings::class, 'user_id', 'id');
+     }
+     public function depositCollections()
+    {
+    return $this->hasMany(DepositCollection::class);
     }
   public function dpsCollection(){
         return $this->hasMany(dpsCollection::class);
@@ -114,5 +129,14 @@ class User extends Authenticatable
     public function latestNominee()
     {
         return $this->hasOne(Nominee::class)->latestOfMany();
+
     }
+
+     public function widthdraw(){
+        return $this->hasMany(Widthdraw::class);
+     }
+      public function interest(){
+        return $this->hasMany(Interest ::class);
+     }
+
 }

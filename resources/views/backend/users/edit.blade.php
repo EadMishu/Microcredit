@@ -26,9 +26,11 @@
             <div class="card-header"><h5>Member Information</h5></div>
             <div class="card-body">
                 <div class="row gy-3">
+                  
+
                     <div class="col-md-6">
                         <label>Member Number</label>
-                        <input type="text" name="member_number" class="form-control " value="{{ old('name', $user->member_number) }}">
+                        <input type="text" name="member_number" class="form-control " value="{{ old('member_number', $user->member_number) }}">
                         @error('member_number')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -68,6 +70,15 @@
                     <div class="col-md-6"><label>Occupation</label><input type="text" name="occupation" class="form-control"
                         value="{{ old('occupation', $user->occupation) }}"></div>
 
+                    <div class="col-md-6"><label>Interest Rate</label><input type="text" name="interest_rate" class="form-control"
+                        value="{{ old('	interest_rate', $user->	interest_rate) }}"></div>
+
+                    <div class="col-md-6"><label>Member Fee</label><input type="text" name="member_fee" class="form-control"
+                        value="{{ old('member_fee', $user->member_fee) }}"></div>
+
+                    <div class="col-md-6"><label>Balance</label><input type="text" name="balance" class="form-control"
+                        value="{{ old('balance', $user->balance) }}"></div>
+
                     {{-- Address dropdowns --}}
                     @foreach (['present', 'permanent'] as $type)
                         <div class="col-md-6"><label>{{ ucfirst($type) }} Address</label><input type="text" name="{{ $type }}_address"
@@ -96,8 +107,9 @@
                                 <option value="">Select Police Station</option>
                             </select>
                         </div>
-                        <div class="col-md-6"><label>Nationality</label><input type="text" name="nationality" class="form-control" value="{{ old('name_bn', $user->nationality) }}"></div>
+                        
                     @endforeach
+                    <div class="col-md-6"><label>Nationality</label><input type="text" name="nationality" class="form-control" value="{{ old('name_bn', $user->nationality) }}"></div>
                      <div class="col-md-6"><label>Mobile Number*</label><input type="tel" name="mobile_number" class="form-control"  value="{{ old('name_bn', $user->mobile_number) }}">
                     @error('mobile_number')
                             <div class="text-danger">{{ $message }}</div>
@@ -129,9 +141,7 @@
             <div class="card-header"><h5>Nominee Information</h5></div>
             <div class="card-body">
                 <div class="row gy-4">
-                    <div class="col-md-6"><label>Nominee Name</label>
-                        <input type="text" name="nominee_name" class="form-control" value="{{ old('nominee_name', $user->latestNominee?->name) }}">
-                    </div>
+                    <input type="text" name="nominee_name" class="form-control" required value="{{ old('nominee_name', $user->latestNominee?->name) }}">
                     <div class="col-md-6"><label>Relation</label>
                         <input type="text" name="nominee_relation" class="form-control" value="{{ old('nominee_relation', $user->latestNominee?->relation) }}">
                     </div>
@@ -189,6 +199,7 @@
                             <option value="">Select Police Station</option>
                         </select>
                     </div>
+
                     <div class="col-md-6"><label>Image</label>
                         <input type="file" name="nominee_image" class="form-control">
                         @if($user->latestNominee?->image)

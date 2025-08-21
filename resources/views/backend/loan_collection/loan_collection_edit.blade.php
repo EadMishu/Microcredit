@@ -28,6 +28,7 @@
                     <label for="date" class="form-label">Date</label>
                     <input type="date" name="date" id="date" class="form-control" value="{{ $date }}" readonly>
                 </div>
+                
 
                 <table class="table table-bordered table-hover">
                     <thead>

@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('occupation')->nullable();
             $table->string('dob')->nullable();
             $table->string('nid')->nullable();
+            $table->decimal('interest_rate', 5, 2)->nullable();
+            $table->integer('member_fee')->nullable();
             $table->text('present_address')->nullable();
             $table->unsignedBigInteger('present_division')->nullable();
             $table->unsignedBigInteger('present_district')->nullable();
@@ -31,6 +33,7 @@ return new class extends Migration
             $table->unsignedBigInteger('permanent_division')->nullable();
             $table->unsignedBigInteger('permanent_district')->nullable();
             $table->unsignedBigInteger('permanent_police_station')->nullable();
+            $table->decimal('balance', 10, 2)->default(0);
             $table->string('nationality')->nullable();
             $table->string('mobile_number')->unique();
             $table->string('mobile_number_2')->nullable();

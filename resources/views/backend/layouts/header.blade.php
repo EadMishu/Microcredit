@@ -5,9 +5,9 @@
     <div class="d-flex align-items-center position-relative">
       <!-- Logo -->
       <div class="logo">
-        <a href="index.html" class="d-flex justify-content-center">
+        <a href="/dashboard" class="d-flex justify-content-center">
           <img src="{{asset('backend')}}/images/logo/sm-light.png" alt="Mobile Logo" width="40px" class="mobile-logo d-none ms-2">
-          <img src="{{asset('backend')}}/images/logo/lg-light.png" alt="Desktop Logo" class="desktop-logo px-5">
+          <img src="{{asset('backend')}}/images/logo/logo.png" alt="Desktop Logo" width="250px" class="desktop-logo px-0.1">
         </a>
       </div>
 
@@ -241,19 +241,29 @@
             <i class="bi bi-fullscreen fs-5"></i>
           </a>
         </li>
+        @php
+    $roleNames = [
+        1 => 'Member',
+        2 => 'Field Officer',
+        3 => 'Admin',
+        4 => 'Owner',
+    ];
+@endphp
 
         <!-- User dropdown start -->
         <li class="dropdown list-unstyled">
+          
           <a class="d-flex gap-2 align-items-center nav-link dropdown-toggle pe-3" data-bs-toggle="dropdown" href="#"
             role="button" aria-haspopup="true" aria-expanded="false">
             <span class="account-user-avatar">
-              <img src="{{asset('backend')}}/images/avater/2.jpg" alt="user-image" width="32" class="rounded-circle">
+              <img src="{{ asset('uploads/files/' . auth()->user()->image) }}" alt="user-image" width="32" class="rounded-circle">
             </span>
             <div class="d-lg-flex flex-column gap-0 d-none">
-              <p class="fw-semibold text-muted mb-0">Dominic</p>
-              <small class="small text-muted mt-0">Administrator</small>
+              <p class="fw-semibold text-muted mb-0">{{ auth()->user()->name }}</p>
+              <small class="small text-muted mt-0">{{ $roleNames[auth()->user()->role] ?? 'Unknown' }}</small>
             </div>
           </a>
+          
           <div class="dropdown-menu dropdown-menu-end card-dark border shadow-sm">
             <a href="#" class="dropdown-item d-flex align-items-center gap-2 text-muted">
               <i class="bi bi-person-circle me-1"></i>

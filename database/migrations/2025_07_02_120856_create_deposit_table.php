@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('deposit_number')->unique(); // Unique loan identifier
             $table->string('amount')->nullable();
+            $table->string('deposit_fee')->nullable();
+            $table->string('service_charge')->nullable();
+            $table->string('stamp_charge')->nullable();
 
             $table->unsignedBigInteger('member_id'); // Foreign key to users (via member_number)
             $table->unsignedBigInteger('deposit_type_id'); // Foreign key to loan_type

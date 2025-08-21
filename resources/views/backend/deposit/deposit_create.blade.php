@@ -3,7 +3,7 @@
 @section('content')
 
 <main class="main-content px-3">
-    <h3 class="pt-3 text-muted">Add New deposit</h3>
+    <h3 class="pt-3 text-muted">Add New Deposit</h3>
     <nav aria-label="breadcrumb px-2">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Home</a></li>
@@ -16,11 +16,11 @@
         @csrf
 
         <div class="card card-dark mb-3">
-            <div class="card-header"><h5>deposit Information</h5></div>
+            <div class="card-header"><h5>Deposit Information</h5></div>
             <div class="card-body">
                 <div class="row gy-4">
                     <div class="col-md-6">
-                        <label>deposit Number*</label>
+                        <label>Deposit Number*</label>
                         <input type="text" name="deposit_number" class="form-control" value="{{ old('deposit_number') }}">
                         @error('deposit_number')
                             <div class="text-danger">{{ $message }}</div>
@@ -33,6 +33,28 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="col-md-6">
+                        <label>Deposit Fee</label>
+                        <input type="text" name="deposit_fee" class="form-control" value="{{ old('deposit_fee') }}">
+                        @error('deposit_fee')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label>Service Charge</label>
+                        <input type="text" name="service_charge" class="form-control" value="{{ old('service_charge') }}">
+                        @error('service_charge')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label>Stamp Charge</label>
+                        <input type="text" name="stamp_charge" class="form-control" value="{{ old('stamp_charge') }}">
+                        @error('stamp_charge')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    
 
                     <div class="col-md-6">
                         <label>Member*</label>
@@ -50,7 +72,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label>deposit Type*</label>
+                        <label>Deposit Type*</label>
                         <select name="deposit_type_id" class="form-control">
                             <option value="">Select deposit Type</option>
                             @foreach ($depositTypes as $type)

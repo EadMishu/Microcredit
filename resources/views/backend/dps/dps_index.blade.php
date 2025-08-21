@@ -7,7 +7,20 @@
     Swal.fire({
         icon: 'success',
         title: 'Success!',
-        text: '{{ session('success') }}',
+        text: "{{ session('success') }}",
+        timer: 3000,
+        showConfirmButton: false
+    });
+</script>
+@endif
+
+
+@if(session('error'))
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: "{{ session('error') }}",
         timer: 3000,
         showConfirmButton: false
     });
@@ -16,8 +29,8 @@
 
 <main class="main-content px-3">
     <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
-        <h3 class="text-muted">dps List</h3>
-        <a href="{{ route('dps.create') }}" class="btn btn-primary">Add New dps</a>
+        <h3 class="text-muted">DPS List</h3>
+        <a href="{{ route('dps.create') }}" class="btn btn-primary">Add New DPS</a>
     </div>
     <div class="card">
         <div class="card-body table-responsive">
@@ -25,12 +38,12 @@
                 <thead class="table-light">
                     <tr>
                         <th>#</th>
-                        <th>dps Number</th>
+                        <th>DPS Number</th>
                         <th>Amount</th>
                         <th>Member Name</th>
-                        <th>dps Type</th>
+                        <th>DPS Type</th>
                         <th>Open Date</th>
-                        <th>Clos Date</th>
+                        <th>Close Date</th>
                         <th>Closed Date</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -68,6 +81,8 @@
     </form>
 </td>
                             <td>
+                                <button type="button" class="btn btn-sm bi bi-plus-lg" onclick="AddInterest('{{ $dps->id }}')"></button>
+                                <button type="button" class="btn btn-sm bi bi-cloud-arrow-up" onclick="CashWithdraw('{{ $dps->id }}')"></button>
                                 <a href="{{ route('dps.edit', $dps->id) }}" class="btn btn-sm "><i class="bi bi-pencil-square"></i></a>
                                 <form action="{{ route('dps.destroy', $dps->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
@@ -90,4 +105,21 @@
         </div>
     </div>
 </main>
+
+@include('backend.dps.interest_modal')
+@include('backend.dps.modal')
 @endsection
+
+@push('js')
+<script>
+    function CashWithdraw(id) {
+        $('#withdraw_dps_id').val(id); // Set user ID input value
+        $('#withdrawModal').modal('show'); // Show modal
+    }
+
+    function AddInterest(id2) {
+        $('#interest_dps_id').val(id2); // Set user ID input value
+        $('#interestModal').modal('show'); // Show modal
+    }
+</script>
+@endpush

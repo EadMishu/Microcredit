@@ -35,6 +35,28 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+                     <div class="col-md-6">
+                        <label>Deposit Fee</label>
+                        <input type="text" name="deposit_fee" class="form-control" value="{{ old('deposit_fee', $deposit->deposit_fee) }}">
+                        @error('deposit_fee')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                     <div class="col-md-6">
+                        <label>Service Charge</label>
+                        <input type="text" name="service_charge" class="form-control" value="{{ old('service_charge', $deposit->service_charge) }}">
+                        @error('service_charge')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                     <div class="col-md-6">
+                        <label>Stamp Charge</label>
+                        <input type="text" name="stamp_charge" class="form-control" value="{{ old('stamp_charge', $deposit->stamp_charge) }}">
+                        @error('stamp_charge')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                 
 
                     <div class="col-md-6">
                         <label>Member*</label>

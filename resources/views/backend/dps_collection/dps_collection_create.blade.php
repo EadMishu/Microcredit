@@ -19,47 +19,52 @@
                     </ul>
                 </div>
             @endif
+            
 
             {{-- Form --}}
             <form action="{{ route('dps_collections.store') }}" method="POST">
-                @csrf
+    @csrf
+     <div class="mb-3">
+        <label for="date" class="form-label">Date</label>
+        <input type="date" name="date" id="date" class="form-control"
+               value="{{ old('date', date('Y-m-d')) }}">
+    </div>
 
-                <div class="mb-3">
-                    <label for="user_id" class="form-label">Select User</label>
-                    <select name="user_id" id="user_id" class="form-select" required>
-                        <option value="">-- Select User --</option>
-                        @foreach($users as $user)
-                            <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                {{ $user->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+    <!-- Then comes your table and foreach loop -->
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>User ID</th>
+                <th>User Name</th>
+                <th>dps Number</th>
+                <th>dps Premium</th>
+                <th>Balance</th>
+                <th>Collection Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($dpss as $index => $dps)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $dps->user?->member_number ?? '—' }}</td>
+                    <td>{{ $dps->user->name ?? 'N/A' }}</td>
+                    <td>{{ $dps->dps_number ?? '—' }}</td>
+                    <td>{{ number_format($dps->premium, 2) }}</td>
+                    <td>{{ number_format(dps_balance($dps->id), 2) }}</td>
+                    <td>
+                        <input type="number" name="collections[{{ $index }}][amount]" class="form-control"
+                               value="{{ old('collections.' . $index . '.amount') }}" step="0.01" min="0">
+                        <input type="hidden" name="collections[{{ $index }}][dps_id]" value="{{ $dps->id }}">
+                        <input type="hidden" name="collections[{{ $index }}][user_id]" value="{{ $dps->user?->id }}">
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-                <div class="mb-3">
-                    <label for="dps_id" class="form-label">Select dps (Optional)</label>
-                    <select name="dps_id" id="dps_id" class="form-select">
-                        <option value="">-- Select dps --</option>
-                        @foreach($dpss as $dps)
-                            <option value="{{ $dps->id }}" {{ old('dps_id') == $dps->id ? 'selected' : '' }}>
-                                dps >{{ $dps->dps_number }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="date" class="form-label">Date</label>
-                    <input type="date" name="date" id="date" class="form-control" value="{{ old('date') }}">
-                </div>
-
-                <div class="mb-3">
-                    <label for="amount" class="form-label">Amount</label>
-                    <input type="number" name="amount" id="amount" class="form-control" value="{{ old('amount') }}" step="0.01" min="0">
-                </div>
-
-                <button type="submit" class="btn btn-success">Save</button>
-            </form>
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
         </div>
     </div>
 </main>

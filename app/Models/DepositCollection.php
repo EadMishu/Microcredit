@@ -19,4 +19,8 @@ class DepositCollection extends Model
      public function user(){
         return $this->belongsTo(user::class);
     }
+    public function deposit()
+{
+    return $this->belongsTo(Deposit::class);
+}
 }

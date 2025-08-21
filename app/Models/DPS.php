@@ -9,11 +9,15 @@ class DPS extends Model
 {
     use HasFactory;
     protected $table = 'dps'; 
-    
+   
 
     protected $fillable = [
         'dps_number',
         'amount',
+        'dps_fee',
+        'service_charge',
+        'stamp_charge',
+        'premium',
         'user_id',
         'dps_type_id',
         'open_date',
@@ -33,13 +37,12 @@ class DPS extends Model
     /**
      * Relationship: Loan belongs to a Member (User)
      */
-     public function collection()
-    {
-        return $this->hasMany(Collection::class);
-    }
-     public function dpsCollection(){
-        return $this->hasMany(dpsCollection::class);
-     }
+ 
+  
+ public function dpsCollection()
+{
+    return $this->hasMany(DpsCollection::class, 'dps_id');
+}
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

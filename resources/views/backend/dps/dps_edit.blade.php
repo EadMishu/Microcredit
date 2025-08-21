@@ -68,7 +68,7 @@
 
                     <div class="col-md-6">
                         <label>Open Date*</label>
-                        <input type="date" name="open_date" class="form-control" value="{{ old('date', \Carbon\Carbon::parse($loanCollection->date)->format('Y-m-d')) }}">
+                        <input type="date" name="open_date" class="form-control" value="{{ old('open_date', $dps->open_date) }}">
                         @error('open_date')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror

@@ -34,7 +34,34 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-
+                     <div class="col-md-6">
+                        <label>Loan Fee</label>
+                        <input type="text" name="loan_fee" class="form-control" value="{{ old('loan_fee', $loan->loan_fee) }}">
+                        @error('loan_fee')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                     <div class="col-md-6">
+                        <label>Service Charge</label>
+                        <input type="text" name="loan_service_charge" class="form-control" value="{{ old('loan_service_charge', $loan->service_charge) }}">
+                        @error('service_charge')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                     <div class="col-md-6">
+                        <label>Stamp Charge</label>
+                        <input type="text" name="stamp_charge" class="form-control" value="{{ old('stamp_charge', $loan->stamp_charge) }}">
+                        @error('stamp_charge')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                     <div class="col-md-6">
+                        <label>Premium</label>
+                        <input type="text" name="premium" class="form-control" value="{{ old('premium', $loan->premium) }}">
+                        @error('premium')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="col-md-6">
                         <label>Member*</label>
                         <select name="user_id" class="form-control">

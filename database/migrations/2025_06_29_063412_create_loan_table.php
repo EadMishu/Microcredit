@@ -16,6 +16,12 @@ return new class extends Migration
 
             $table->string('loan_number')->unique(); // Unique loan identifier
             $table->string('amount')->nullable();
+            $table->string('interest_balance')->nullable();
+            $table->string('total_balance')->nullable();
+            $table->string('loan_fee')->nullable();
+            $table->string('service_charge')->nullable();
+            $table->string('stamp_charge')->nullable();
+            $table->string('premium')->nullable();
 
             $table->unsignedBigInteger('user_id'); // Foreign key to users (via user_number)
             $table->unsignedBigInteger('loan_type_id'); // Foreign key to loan_type

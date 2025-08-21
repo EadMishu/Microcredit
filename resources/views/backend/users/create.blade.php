@@ -24,6 +24,7 @@
                         <div class="row gy-4">
 
                             {{-- User fields --}}
+                  
                             <div class="col-md-6">
                                 <label>Member Number</label>
                                 <input type="text" name="member_number" class="form-control " value="{{ old('member_number') }}">
@@ -71,6 +72,14 @@
                             <div class="col-md-6">
                                 <label>Occupation</label>
                                 <input type="text" name="occupation" class="form-control" value="{{ old('occupation') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label>Member Fee</label>
+                                <input type="text" name="member_fee" class="form-control" value="{{ old('member_fee') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label>Interest Rate</label>
+                                <input type="text" name="interest_rate" class="form-control" value="{{ old('interest_rate') }}">
                             </div>
 
                             {{-- Present Address --}}

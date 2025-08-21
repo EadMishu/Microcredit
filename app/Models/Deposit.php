@@ -8,10 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Deposit extends Model
 {
     use HasFactory;
+
     protected $table = 'deposit';
+
     protected $fillable = [
         'deposit_number',
         'amount',
+        'deposit_fee',
+        'service_charge',
+        'stamp_charge',
+     
         'member_id',
         'deposit_type_id',
         'open_date',
@@ -21,32 +27,26 @@ class Deposit extends Model
         'note',
     ];
 
-    /**
-     * Status constants
-     */
     const STATUS_PENDING = 1;
     const STATUS_RUNNING = 2;
     const STATUS_CLOSED  = 3;
 
-    /**
-     * Relationship: Loan belongs to a Member (User)
-     */
+    // ❌ REMOVE this - it's invalid
+    // public function depositCollections()
+    // {
+    //     return $this->hasMany(DepositCollection::class);
+    // }
+
     public function member()
     {
         return $this->belongsTo(User::class, 'member_id');
     }
 
-    /**
-     * Relationship: Loan belongs to a LoanType
-     */
     public function depositType()
     {
         return $this->belongsTo(DepositType::class, 'deposit_type_id');
     }
 
-    /**
-     * Accessor for readable status text
-     */
     public function getStatusTextAttribute()
     {
         return match ($this->status) {
@@ -56,6 +56,5 @@ class Deposit extends Model
             default => 'Unknown',
         };
     }
-
-
 }
+
